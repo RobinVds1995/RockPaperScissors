@@ -8,7 +8,17 @@
 </head>
 
 <body>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <div id="result"></div>
+    <div id="score"></div>
+
+
+
     <script>
+         var points = 0;
+        //Deze functie gaat rando rock paper of scissors genereren voor de pc
         function computerPlay() {
             randomNum = Math.round(Math.random() * 2);
             if (randomNum == 0) {
@@ -19,39 +29,75 @@
                 return "Scissors"
             }
         }
-        let gameRound = (playerSelection, computerSelection) => {
+        //Deze functie voert het spel uit en returned een nummer voor het resultaat
+        function gameRound(playerSelection, computerSelection) {
             playerSelection = playerSelection.toLowerCase();
             computerSelection = computerSelection.toLowerCase();
             switch (playerSelection) {
                 case 'rock':
                     switch (computerSelection) {
-                        case 'rock': return ('That is a tie: Rock vs Rock!');
-                        case 'paper': return ('You lose, paper beats rock!');
-                        case 'scissors': return ('You win, rock beats scissors!');
+                        case 'rock': return (2);
+                        case 'paper': return (3);
+                        case 'scissors': return (1);
                     };
                 case 'paper':
                     switch (computerSelection) {
-                        case 'rock': return ('You win, paper beats rock!');
-                        case 'paper': return ('That is a tie: Paper vs Paper!');
-                        case 'scissors': return ('You lose, scissors beats paper!');
+                        case 'rock': return (1);
+                        case 'paper': return (2);
+                        case 'scissors': return (3);
                     };
                 case 'scissors':
                     switch (computerSelection) {
-                        case 'rock': return ('You lose, rock beats scissors');
-                        case 'paper': return ('You win, scissors beats paper!');
-                        case 'scissors': return ('That is a tie, scissors vs scissors');
+                        case 'rock': return (3);
+                        case 'paper': return (1);
+                        case 'scissors': return (2);
                     };
             }
         }
-        let game = () => {
-            var i;
-            for (i = 0; i < 5; i++) {
-                playerSelection = prompt("Rock, Paper or Scissors?", "Rock");
-                computerSelection = computerPlay();
-                console.log(gameRound(playerSelection, computerSelection))
+        //Deze functie genereert de output string voor het resultaat van het spel.
+        function gameExecution(playerSelection) {
+            if ((gameRound(playerSelection, computerPlay())) === 1) {
+                points = parseInt(points) + parseInt(1);
+                if (checkWin(points)) {
+                    return ("You have 5 points and you win the battle!")
+                };
+                return ("You win");
+            } else if ((gameRound(playerSelection, computerPlay())) === 2) {
+                return ("Draw!");
+            } else {
+                points = parseInt(points) + parseInt(1);
+                return ("You lose")
             }
         }
-        game()
+        //Functie checkt of we gewonnen zijn.
+        function checkWin(points) {
+            if (parseInt(points) > parseInt(4)) {
+                this.points = parseInt(0);
+                return true;
+            }
+        }
+        //Hier worden de DOM elementen geimporteerd
+        const rock = document.querySelector('#rock');
+        const paper = document.querySelector('#paper');
+        const scissors = document.querySelector('#scissors');
+        const div = document.querySelector("#result");
+        const score = document.querySelector("#score");
+        
+
+        //Hier worden de event Listeners toegevoegd
+        rock.addEventListener('click', () => {
+            div.textContent = (gameExecution("rock"));
+            score.innerHTML = points;
+        });
+        paper.addEventListener('click', () => {
+            div.textContent = (gameExecution("paper"));
+            score.innerHTML = points;
+        });
+        scissors.addEventListener('click', () => {
+            div.textContent = (gameExecution("scissors"));
+            score.innerHTML = points;
+        });
+
     </script>
 
 </body>
